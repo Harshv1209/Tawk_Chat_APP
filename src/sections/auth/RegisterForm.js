@@ -1,43 +1,37 @@
 import React, { useState } from "react"
-import FormProvider from "../../../components/hook-form/FormProvider"
+import FormProvider from "../../components/hook-form/FormProvider"
 import * as Yup from "yup"
 import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
-import {
-  Alert,
-  Button,
-  IconButton,
-  InputAdornment,
-  Link,
-  Stack,
-} from "@mui/material"
-import { RHFTextField } from "../../../components/hook-form"
+import { Alert, Button, IconButton, InputAdornment, Stack } from "@mui/material"
+import RHFTextField from "../../components/hook-form/RHFTextField"
 import { Eye, EyeSlash } from "phosphor-react"
-import { Link as RouterLink } from "react-router-dom"
 
-const NewPasswordForm = () => {
+const RegisterForm = () => {
   const [showPassword, setShowPassword] = useState(false)
-  const NewPasswordSchema = Yup.object().shape({
-    newPassword: Yup.string()
-      .min(6, "Password must be at least 6 chracters ")
-      .required("Password is Requied"),
-    confirmPassword: Yup.string()
-      .required("Password is Requied")
-      .oneOf([Yup.ref("newPassword"), null], "Password must match"),
+  const RegisterSchema = Yup.object().shape({
+    firstName: Yup.string().required("Email is Requied"),
+    lastName: Yup.string().required("Email is Requied"),
+    email: Yup.string()
+      .required("Email is Requied")
+      .email("Email must be a valid email address"),
+    password: Yup.string().required("Password is Requied"),
   })
   const defaultValues = {
-    newPassword: "",
-    confirmPassword: "",
+    firstName: "",
+    lastName: "",
+    email: "demo@tawk.com",
+    password: "demo1234",
   }
   const methods = useForm({
-    resolver: yupResolver(NewPasswordSchema),
+    resolver: yupResolver(RegisterSchema),
     defaultValues,
   })
   const {
     reset,
     setError,
     handleSubmit,
-    formState: { errors, isSubmitting, isSubmitSuccessful },
+    formState: { errors },
   } = methods
   const onSubmit = async (data) => {
     try {
@@ -57,28 +51,14 @@ const NewPasswordForm = () => {
         {!!errors.afterSubmit && (
           <Alert severity="error">{errors.afterSubmit.message} </Alert>
         )}
-
+        <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
+          <RHFTextField name={"firstName"} label="First Name" />
+          <RHFTextField name={"lastName"} label="Last Name" />
+        </Stack>
+        <RHFTextField name={"email"} label="Email Address" />
         <RHFTextField
-          name={"newPassword"}
-          label="New Password"
-          type={showPassword ? "text" : "password"}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment>
-                <IconButton
-                  onClick={() => {
-                    setShowPassword(!showPassword)
-                  }}
-                >
-                  {showPassword ? <Eye /> : <EyeSlash />}
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
-        />
-        <RHFTextField
-          name={"confirmPassword"}
-          label="Confirm Password"
+          name={"password"}
+          label="Password"
           type={showPassword ? "text" : "password"}
           InputProps={{
             endAdornment: (
@@ -111,11 +91,11 @@ const NewPasswordForm = () => {
             },
           }}
         >
-          Submit
+          Create Account
         </Button>
       </Stack>
     </FormProvider>
   )
 }
 
-export default NewPasswordForm
+export default RegisterForm

@@ -1,10 +1,10 @@
 import React from "react"
-import FormProvider from "../../../components/hook-form/FormProvider"
+import FormProvider from "../../components/hook-form/FormProvider"
 import * as Yup from "yup"
 import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { Alert, Button, Stack } from "@mui/material"
-import { RHFTextField } from "../../../components/hook-form"
+import RHFTextField from "../../components/hook-form/RHFTextField"
 
 const ResetPasswordForm = () => {
   const ResetPasswordSchema = Yup.object().shape({
