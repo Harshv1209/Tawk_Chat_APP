@@ -10,8 +10,28 @@ import useSettings from "../../hooks/useSettings"
 import AntSwitch from "../../components/AntSwitch"
 import Menu from "@mui/material/Menu"
 import MenuItem from "@mui/material/MenuItem"
+import { useNavigate } from "react-router-dom"
+
+const getPath = (index) => {
+  switch (index) {
+    case 0:
+      return "/app"
+    case 1:
+      return "/group"
+
+    case 2:
+      return "/call"
+
+    case 3:
+      return "/settings"
+
+    default:
+      break
+  }
+}
 
 const SideBar = () => {
+  const navigate = useNavigate()
   const theme = useTheme()
   const [selected, setSelected] = useState(0)
   const { onToggleMode } = useSettings()
@@ -77,6 +97,7 @@ const SideBar = () => {
                 <IconButton
                   onClick={() => {
                     setSelected(el.index)
+                    navigate(getPath(el.index))
                   }}
                   sx={{
                     width: "max-content",
@@ -114,6 +135,7 @@ const SideBar = () => {
                       : theme.palette.text.primary,
                 }}
                 onClick={() => {
+                  navigate(getPath(3))
                   setSelected(3)
                 }}
               >
